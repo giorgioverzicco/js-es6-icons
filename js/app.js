@@ -1,6 +1,13 @@
 import { data } from "./data.js";
 
 // FUNCTIONS
+function shuffleDataColors(arr) {
+  arr.forEach((el) => {
+    const randColor = Math.floor(Math.random() * 16777215).toString(16);
+    el.color = `#${randColor}`;
+  });
+}
+
 function addDataToDOM(arr, parent) {
   parent.innerHTML = "";
 
@@ -23,6 +30,7 @@ const boxTpl = document.querySelector("#tpl-box").content;
 const selectElm = document.querySelector("#icon-type");
 const iconTypes = [...new Set(data.map((d) => d.type))];
 
+shuffleDataColors(data);
 addDataToDOM(data, boxWrapper);
 
 iconTypes.forEach((type) => {
