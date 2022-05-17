@@ -1,8 +1,8 @@
 import { data } from "./data.js";
 
 // FUNCTIONS
-function addDataToDOM(arr) {
-  boxWrapper.innerHTML = "";
+function addDataToDOM(arr, parent) {
+  parent.innerHTML = "";
 
   arr.forEach((el) => {
     const box = boxTpl.cloneNode(true);
@@ -13,7 +13,7 @@ function addDataToDOM(arr) {
     box.querySelector(".box__icon i").classList.add(family, prefix + name);
     box.querySelector(".box__text").innerHTML = name;
 
-    boxWrapper.append(box);
+    parent.append(box);
   });
 }
 
@@ -23,7 +23,7 @@ const boxTpl = document.querySelector("#tpl-box").content;
 const selectElm = document.querySelector("#icon-type");
 const iconTypes = [...new Set(data.map((d) => d.type))];
 
-addDataToDOM(data);
+addDataToDOM(data, boxWrapper);
 
 iconTypes.forEach((type) => {
   const typeCapitalized = type.charAt(0).toUpperCase() + type.slice(1);
@@ -33,5 +33,5 @@ iconTypes.forEach((type) => {
 selectElm.addEventListener("change", function (e) {
   const type = e.target.value;
   const filteredData = data.filter((d) => d.type === type || type === "all");
-  addDataToDOM(filteredData);
+  addDataToDOM(filteredData, boxWrapper);
 });
