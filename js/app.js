@@ -1,25 +1,29 @@
 import { data } from "./data.js";
 
-const container = document.querySelector(".container");
+// FUNCTIONS
+function addDataToDOM(arr) {
+  boxWrapper.innerHTML = "";
+
+  arr.forEach((el) => {
+    const box = boxTpl.cloneNode(true);
+    const { name, prefix, type, family, color } = el;
+
+    box.querySelector(".box").classList.add(`box--${type}`);
+    box.querySelector(".box__icon").style.color = color;
+    box.querySelector(".box__icon i").classList.add(family, prefix + name);
+    box.querySelector(".box__text").innerHTML = name;
+
+    boxWrapper.append(box);
+  });
+}
+
+// MAIN
+const boxWrapper = document.querySelector("#box-wrapper");
 const boxTpl = document.querySelector("#tpl-box").content;
 const selectElm = document.querySelector("#icon-type");
-const iconTypes = [];
+const iconTypes = [...new Set(data.map((d) => d.type))];
 
-data.forEach((el) => {
-  const box = boxTpl.cloneNode(true);
-  const { name, prefix, type, family, color } = el;
-
-  box.querySelector(".box").classList.add(`box--${type}`);
-  box.querySelector(".box__icon").style.color = color;
-  box.querySelector(".box__icon i").classList.add(family, prefix + name);
-  box.querySelector(".box__text").innerHTML = name;
-
-  if (!iconTypes.includes(type)) {
-    iconTypes.push(type);
-  }
-
-  container.append(box);
-});
+addDataToDOM(data);
 
 iconTypes.forEach((type) => {
   const typeCapitalized = type.charAt(0).toUpperCase() + type.slice(1);
@@ -28,13 +32,6 @@ iconTypes.forEach((type) => {
 
 selectElm.addEventListener("change", function (e) {
   const type = e.target.value;
-  const boxes = document.querySelectorAll(".box");
-
-  boxes.forEach((box) => {
-    if (box.classList.contains(`box--${type}`) || type === "all") {
-      box.classList.remove("hidden");
-    } else {
-      box.classList.add("hidden");
-    }
-  });
+  const filteredData = data.filter((d) => d.type === type || type === "all");
+  addDataToDOM(filteredData);
 });
