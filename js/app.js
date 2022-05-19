@@ -38,8 +38,8 @@ iconTypes.forEach((type) => {
   selectElm.innerHTML += `<option value="${type}">${typeCapitalized}</option>`;
 });
 
-selectElm.addEventListener("change", function (e) {
-  const type = e.target.value;
-  const filteredData = data.filter((d) => d.type === type || type === "all");
+selectElm.addEventListener("change", function () {
+  const type = this.value;
+  const filteredData = data.filter((d) => d.type === type || !type);
   addDataToDOM(filteredData, boxWrapper);
 });
